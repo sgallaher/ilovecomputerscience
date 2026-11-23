@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong Challenge</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { overflow: auto; }
+        .pong-page { width: min(900px, calc(100% - 30px)); margin: 0 auto; padding: 24px 0 40px; }
+        .pong-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .pong-nav a { color: #d9d3ff; text-decoration: none; border: 1px solid var(--line); border-radius: 30px; padding: 9px 14px; font-size: 11px; font-weight: 800; }
+        .pong-title { text-align: center; font: 700 38px 'Space Grotesk'; margin: 10px 0 18px; }
+        .player-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+        .player-card { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(145deg,rgba(34,35,70,.94),rgba(21,23,48,.94)); }
+        .player-card label { display: block; margin-bottom: 8px; color: #b8a8ff; font-size: 10px; font-weight: 800; letter-spacing: 1.2px; }
+        .player-card input { width: 100%; border: 1px solid rgba(165,145,255,.35); border-radius: 9px; outline: 0; padding: 12px; color: white; background: rgba(10,11,29,.6); }
+        .player-card input:focus { border-color: #ae91ff; }
+        .start-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+        #startPong { border: 0; border-radius: 9px; padding: 12px 18px; color: #17142c; background: linear-gradient(90deg,#b8a4ff,#ff9acb); font-weight: 800; cursor: pointer; }
+        #startPong:disabled { opacity: .6; cursor: wait; }
+        #matchStatus { color: #8588a8; font-size: 12px; }
+        canvas { width: 100%; aspect-ratio: 16 / 9; display: block; border: 1px solid var(--line); border-radius: 12px; background: #f8f8ff; touch-action: none; }
+        .controls { display: flex; justify-content: space-between; color: #8588a8; font-size: 11px; margin-top: 10px; }
+        @media (max-width: 560px) {
+            .player-cards { grid-template-columns: 1fr; }
+            .start-row { align-items: flex-start; flex-direction: column; }
+            .pong-title { font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="pong-page">
+        <nav class="pong-nav">
+            <a href="/">← Main page</a>
+            <a href="/#typing-challenge">Typing challenge</a>
+        </nav>
+        <h1 class="pong-title">Pong Challenge</h1>
+
+        <div class="player-cards">
+            <div class="player-card">
+                <label for="leftPlayerName">PLAYER LEFT</label>
+                <input id="leftPlayerName" maxlength="24" autocomplete="name" placeholder="Enter left player name">
+            </div>
+            <div class="player-card">
+                <label for="rightPlayerName">PLAYER RIGHT</label>
+                <input id="rightPlayerName" maxlength="24" autocomplete="name" placeholder="Enter right player name">
+            </div>
+        </div>
+        <div class="start-row">
+            <span id="matchStatus">Enter both names, then start the match.</span>
+            <button id="startPong" type="button">START MATCH</button>
+        </div>
+
+        <canvas id="gameCanvas" width="800" height="450" aria-label="Pong game canvas"></canvas>
+        <div class="controls">
+            <span>Left: Q / A</span>
+            <span>First to 5 wins</span>
+            <span>Right: P / L</span>
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='pong.js') }}"></script>
+</body>
+</html>

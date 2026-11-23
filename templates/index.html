@@ -17,11 +17,15 @@
 
 
         <section class="hero">
+            <div class="challenge-links">
+                <a href="#typing-challenge">Typing challenge</a>
+                <a href="/game">Pong challenge</a>
+            </div>
             <div class="eyebrow"><span>⚡</span> THE 10-SECOND(ISH) CHALLENGE</div>
             <h1>Show your love<br>for <span>Computer Science.</span></h1>
             <p class="intro">Quick fingers. Sharp focus. One perfect phrase.<br>Can you make it onto the leaderboard?</p>
 
-            <div class="challenge-card">
+            <div class="challenge-card" id="typing-challenge">
                 <div class="challenge-card-top">
                     <span class="step-label">YOUR MISSION</span>
                     <span class="exact-label"><span class="tiny-lock">◆</span> EXACT MATCH REQUIRED</span>
@@ -59,6 +63,22 @@
                     <li class="empty-state">Loading the leaderboard...</li>
                 </ol>
                 <div class="board-footer"><span><span class="live-dot"></span> LIVE LEADERBOARD</span><span id="playerCount">LET'S MAKE HISTORY</span></div>
+            </div>
+        </section>
+
+        <section class="pong-section leaderboard-section">
+            <div class="leaderboard-heading">
+                <div>
+                    <div class="eyebrow leaderboard-eyebrow">THE PONG CHAMPIONS</div>
+                    <h2>Pong results <span>🏓</span></h2>
+                </div>
+                <a class="top-ten pong-play-link" href="/game">PLAY</a>
+            </div>
+            <div class="leaderboard-card">
+                <div class="table-head"><span>MATCH RESULT</span><span>FINAL SCORE</span></div>
+                <ol class="score-list" id="pongResults">
+                    <li class="empty-state">Loading Pong results...</li>
+                </ol>
             </div>
         </section>
         <footer>MADE FOR THE LOVE OF <span>COMPUTER SCIENCE</span> <span class="footer-star">✦</span></footer>
