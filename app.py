@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 BASE_DIR = Path(__file__).resolve().parent
 SCORES_FILE = BASE_DIR / "scores.txt"
+PONG_RESULTS_FILE = BASE_DIR / "pong_results.txt"
 TARGET_PHRASE = "I love Computer Science"
 MAX_NAME_LENGTH = 24
 
@@ -52,9 +53,111 @@ def save_scores(scores):
             os.remove(temporary_name)
 
 
+def read_pong_results():
+    """Read completed Pong matches from the persistent CSV file."""
+    results = []
+
+    if not PONG_RESULTS_FILE.exists():
+        return results
+
+    with PONG_RESULTS_FILE.open("r", newline="", encoding="utf-8") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if len(row) != 4:
+                continue
+            left_name, left_score, right_name, right_score = row
+            try:
+                left_score = int(left_score)
+                right_score = int(right_score)
+            except (TypeError, ValueError):
+                continue
+            if left_name.strip() and right_name.strip():
+                results.append({
+                    "left_name": left_name.strip(),
+                    "left_score": left_score,
+                    "right_name": right_name.strip(),
+                    "right_score": right_score,
+                })
+
+    return list(reversed(results))
+
+
+def save_pong_result(result):
+    PONG_RESULTS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary_name = tempfile.mkstemp(
+        prefix="pong_results_", suffix=".tmp", dir=PONG_RESULTS_FILE.parent, text=True
+    )
+    try:
+        existing_results = read_pong_results()
+        existing_results.reverse()
+        with os.fdopen(fd, "w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            for existing in existing_results:
+                writer.writerow([
+                    existing["left_name"],
+                    existing["left_score"],
+                    existing["right_name"],
+                    existing["right_score"],
+                ])
+            writer.writerow([
+                result["left_name"],
+                result["left_score"],
+                result["right_name"],
+                result["right_score"],
+            ])
+        os.replace(temporary_name, PONG_RESULTS_FILE)
+    finally:
+        if os.path.exists(temporary_name):
+            os.remove(temporary_name)
+
+
 @app.get("/")
 def index():
     return render_template("index.html")
+
+
+@app.get("/game")
+def game():
+    return render_template("game.html")
+
+
+@app.get("/api/pong-results")
+def get_pong_results():
+    results = read_pong_results()
+    return jsonify({"results": results[:10]})
+
+
+@app.post("/api/pong-results")
+def add_pong_result():
+    data = request.get_json(silent=True) or {}
+    left_name = str(data.get("left_name", "")).strip()
+    right_name = str(data.get("right_name", "")).strip()
+
+    if not left_name or not right_name:
+        return jsonify({"error": "Both player names are required."}), 400
+    if len(left_name) > MAX_NAME_LENGTH or len(right_name) > MAX_NAME_LENGTH:
+        return jsonify({"error": f"Player names must be 1-{MAX_NAME_LENGTH} characters."}), 400
+
+    try:
+        left_score = int(data.get("left_score"))
+        right_score = int(data.get("right_score"))
+    except (TypeError, ValueError):
+        return jsonify({"error": "The submitted scores were invalid."}), 400
+
+    scores = (left_score, right_score)
+    if not all(0 <= score <= 5 for score in scores):
+        return jsonify({"error": "Pong scores must be between 0 and 5."}), 400
+    if sorted(scores)[-1] != 5 or scores.count(5) != 1:
+        return jsonify({"error": "A match must finish with exactly one player at 5."}), 400
+
+    result = {
+        "left_name": left_name,
+        "left_score": left_score,
+        "right_name": right_name,
+        "right_score": right_score,
+    }
+    save_pong_result(result)
+    return jsonify({"results": read_pong_results()[:10]})
 
 
 @app.get("/api/scores")

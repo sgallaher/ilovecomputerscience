@@ -86,6 +86,47 @@ async function loadScores() {
     }
 }
 
+async function loadPongResults() {
+    const pongResults = document.getElementById("pongResults");
+    try {
+        const response = await fetch("/api/pong-results");
+        if (!response.ok) throw new Error("Could not load Pong results");
+        const data = await response.json();
+        pongResults.replaceChildren();
+
+        if (!data.results.length) {
+            const empty = document.createElement("li");
+            empty.className = "empty-state";
+            empty.textContent = "No Pong matches yet. Be the first to play!";
+            pongResults.appendChild(empty);
+            return;
+        }
+
+        data.results.forEach((result, index) => {
+            const item = document.createElement("li");
+            item.className = "score-row";
+
+            const left = document.createElement("div");
+            left.className = "score-left";
+            const rank = document.createElement("span");
+            rank.className = "rank";
+            rank.textContent = String(index + 1);
+            const names = document.createElement("span");
+            names.className = "score-name";
+            names.textContent = `${result.left_name} vs ${result.right_name}`;
+            left.append(rank, names);
+
+            const score = document.createElement("span");
+            score.className = "score-time";
+            score.textContent = `${result.left_score} : ${result.right_score}`;
+            item.append(left, score);
+            pongResults.appendChild(item);
+        });
+    } catch (error) {
+        pongResults.innerHTML = '<li class="empty-state">Pong results temporarily unavailable.</li>';
+    }
+}
+
 function renderScores(scores, newestName) {
     scoreList.replaceChildren();
     if (!scores.length) {
@@ -231,3 +272,4 @@ document.getElementById("closeRecord").addEventListener("click", () => {
 });
 
 loadScores();
+loadPongResults();

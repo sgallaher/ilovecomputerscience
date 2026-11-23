@@ -50,6 +50,11 @@ body {
 .progress-bar { width: 0; height: 100%; background: linear-gradient(90deg,#8c76ff,#ff79ba); transition: width .12s; }
 .feedback { color: #8588a8; font-size: 10px; min-height: 15px; margin-top: 11px; }
 .leaderboard-section { max-width: 660px; margin: 0 auto; }
+.pong-section { margin-top: 42px; }
+.challenge-links { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; }
+.challenge-links a { color: #d9d3ff; text-decoration: none; border: 1px solid var(--line); border-radius: 30px; padding: 9px 14px; font-size: 11px; font-weight: 800; }
+.challenge-links a:hover { border-color: rgba(182,160,255,.55); }
+.pong-play-link { text-decoration: none; color: #d2c5ff; }
 .leaderboard-heading { display: flex; align-items: end; justify-content: space-between; margin: 0 0 15px; }
 .leaderboard-eyebrow { justify-content: flex-start; font-size: 9px; }
 .leaderboard-heading h2 { font: 700 27px 'Space Grotesk'; margin: 5px 0 0; letter-spacing: -.8px; }
