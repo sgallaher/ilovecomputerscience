@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101126">
+    <title>I Love Computer Science | Typing Challenge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <main class="page-shell">
+
+
+        <section class="hero">
+            <div class="eyebrow"><span>⚡</span> THE 10-SECOND(ISH) CHALLENGE</div>
+            <h1>Show your love<br>for <span>Computer Science.</span></h1>
+            <p class="intro">Quick fingers. Sharp focus. One perfect phrase.<br>Can you make it onto the leaderboard?</p>
+
+            <div class="challenge-card">
+                <div class="challenge-card-top">
+                    <span class="step-label">YOUR MISSION</span>
+                    <span class="exact-label"><span class="tiny-lock">◆</span> EXACT MATCH REQUIRED</span>
+                </div>
+                <div class="phrase" aria-label="I love Computer Science">
+                    <span>I love</span> <strong>Computer Science</strong>
+                </div>
+                <label class="input-label" for="challengeInput">TYPE THE PHRASE BELOW</label>
+                <div class="input-wrap">
+                    <span class="input-prompt">&gt;_</span>
+                    <input id="challengeInput" type="text" autocomplete="off" autocapitalize="off"
+                           spellcheck="false" placeholder="Start typing here..." aria-describedby="inputHint">
+                    <span class="input-status" id="inputStatus">READY</span>
+                </div>
+                <div class="input-footer">
+                    <span id="inputHint">The clock starts when you focus the input.</span>
+                    <span class="timer" id="timer">0.000s</span>
+                </div>
+                <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+                <div class="feedback" id="feedback" aria-live="polite">Capital letters and spaces matter. Good luck!</div>
+            </div>
+        </section>
+
+        <section class="leaderboard-section">
+            <div class="leaderboard-heading">
+                <div>
+                    <div class="eyebrow leaderboard-eyebrow">THE FASTEST FINGERS</div>
+                    <h2>Hall of fame <span>🏆</span></h2>
+                </div>
+                <div class="top-ten">TOP <strong>10</strong></div>
+            </div>
+            <div class="leaderboard-card">
+                <div class="table-head"><span>RANK / NAME</span><span>TIME</span></div>
+                <ol class="score-list" id="scoreList">
+                    <li class="empty-state">Loading the leaderboard...</li>
+                </ol>
+                <div class="board-footer"><span><span class="live-dot"></span> LIVE LEADERBOARD</span><span id="playerCount">LET'S MAKE HISTORY</span></div>
+            </div>
+        </section>
+        <footer>MADE FOR THE LOVE OF <span>COMPUTER SCIENCE</span> <span class="footer-star">✦</span></footer>
+    </main>
+
+    <div class="modal-backdrop" id="nameModal" aria-hidden="true">
+        <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-icon" id="modalIcon">🎉</div>
+            <div class="modal-kicker">CHALLENGE COMPLETE</div>
+            <h2 id="modalTitle">You did it!</h2>
+            <p class="modal-copy">Perfect typing. Now let's get your name on the board.</p>
+            <div class="result-time" id="resultTime">0.000s</div>
+            <label class="input-label" for="playerName">WHAT SHOULD WE CALL YOU?</label>
+            <input class="name-input" id="playerName" maxlength="24" autocomplete="name" placeholder="Enter your name">
+            <p class="modal-error" id="modalError" aria-live="polite"></p>
+            <button class="submit-button" id="submitScore">ADD MY SCORE <span>→</span></button>
+        </section>
+    </div>
+
+    <div class="celebration-overlay" id="celebration" aria-hidden="true"></div>
+    <div class="record-modal" id="recordModal" aria-hidden="true">
+        <div class="record-card">
+            <div class="record-emoji">🏆</div>
+            <div class="record-kicker">A NEW LEGEND IS BORN</div>
+            <h2>NEW HIGH<br><span>SCORE!</span></h2>
+            <p id="recordMessage">You've taken the number one spot!</p>
+            <button id="closeRecord">THAT'S ME! ✨</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
